@@ -77,7 +77,11 @@ public class LearningView extends View {
     public boolean isSoundEnabled() { return soundEnabled; }
 
     public void onVoiceReady() {
-        if (screen == HOME) postDelayed(() -> activity.speak("Dobro došli! Učimo kroz igru."), 350);
+        if (screen == HOME) postDelayed(new Runnable() {
+            @Override public void run() {
+                activity.speak("Dobro došli! Učimo kroz igru.");
+            }
+        }, 350);
     }
 
     public boolean goHome() {
@@ -379,14 +383,21 @@ public class LearningView extends View {
 
     private void startGame() {
         screen = GAME; scene = 0; stars = 0; answered = false; celebration = 0;
-        invalidate(); postDelayed(() -> activity.speak(QUESTIONS[scene]), 350);
+        invalidate(); postDelayed(new Runnable() {
+            @Override public void run() { activity.speak(QUESTIONS[scene]); }
+        }, 350);
     }
 
     private void correct() {
         answered = true; stars++; activity.successSound(); activity.speak(ANSWERS[scene]);
         ValueAnimator a = ValueAnimator.ofFloat(0, 1);
         a.setDuration(650); a.setInterpolator(new OvershootInterpolator());
-        a.addUpdateListener(v -> { celebration = (float) v.getAnimatedValue(); invalidate(); });
+        a.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override public void onAnimationUpdate(ValueAnimator animation) {
+                celebration = (float) animation.getAnimatedValue();
+                invalidate();
+            }
+        });
         a.start();
     }
 
@@ -394,7 +405,12 @@ public class LearningView extends View {
         activity.wrongSound(); activity.speak("Pokušaj ponovo.");
         ValueAnimator a = ValueAnimator.ofFloat(0, -20, 20, -13, 13, 0);
         a.setDuration(380);
-        a.addUpdateListener(v -> { shake = (float) v.getAnimatedValue(); invalidate(); });
+        a.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override public void onAnimationUpdate(ValueAnimator animation) {
+                shake = (float) animation.getAnimatedValue();
+                invalidate();
+            }
+        });
         a.start();
     }
 
@@ -403,7 +419,9 @@ public class LearningView extends View {
             screen = COMPLETE; activity.speak("Bravo! Završio si knjigu i osvojio deset zvezdica!");
         } else {
             scene++; answered = false; celebration = 0; invalidate();
-            postDelayed(() -> activity.speak(QUESTIONS[scene]), 280);
+            postDelayed(new Runnable() {
+                @Override public void run() { activity.speak(QUESTIONS[scene]); }
+            }, 280);
         }
         invalidate();
     }
