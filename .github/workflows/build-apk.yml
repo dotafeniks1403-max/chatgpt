@@ -1,0 +1,36 @@
+name: Napravi Android APK
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Preuzmi izvorni kod
+        uses: actions/checkout@v4
+      - name: Podesi Java okruženje
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+      - name: Podesi Android SDK
+        uses: android-actions/setup-android@v3
+      - name: Instaliraj Android alate
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+      - name: Napravi i proveri APK
+        run: |
+          chmod +x build.sh
+          ./build.sh
+      - name: Sačuvaj APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: UcimoKrozIgru-Kamioni-APK
+          path: build/UcimoKrozIgru-Kamioni.apk
+          if-no-files-found: error
+          retention-days: 30
