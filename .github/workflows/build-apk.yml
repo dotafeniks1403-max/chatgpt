@@ -21,8 +21,9 @@ jobs:
           java-version: "17"
       - name: Instaliraj Android alate
         run: |
-          yes | sdkmanager --licenses >/dev/null || true
-          sdkmanager "platforms;android-35" "build-tools;35.0.0"
+          sdkmanager_bin="$(find /usr/local/lib/android/sdk/cmdline-tools -path '*/bin/sdkmanager' -type f | sort -V | tail -1)"
+          yes | "$sdkmanager_bin" --licenses >/dev/null || true
+          "$sdkmanager_bin" "platforms;android-35" "build-tools;35.0.0"
       - name: Napravi i proveri APK
         run: |
           chmod +x build.sh
