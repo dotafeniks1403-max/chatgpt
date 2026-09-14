@@ -2,20 +2,17 @@ package rs.ucimokrozigru.kamioni;
 
 import android.app.Activity;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.ToneGenerator;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import java.util.Locale;
-
-public class MainActivity extends Activity implements TextToSpeech.OnInitListener {
-    private TextToSpeech tts;
+public class MainActivity extends Activity {
+    private MediaPlayer player;
     private ToneGenerator tones;
     private LearningView learningView;
-    private boolean ttsReady;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,8 +21,8 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         hideSystemUi();
-        tones = new ToneGenerator(AudioManager.STREAM_MUSIC, 75);
-        tts = new TextToSpeech(this, this);
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
+        tones = new ToneGenerator(AudioManager.STREAM_MUSIC, 70);
         learningView = new LearningView(this);
         setContentView(learningView);
     }
@@ -46,51 +43,49 @@ public class MainActivity extends Activity implements TextToSpeech.OnInitListene
         if (hasFocus) hideSystemUi();
     }
 
-    @Override
-    public void onInit(int status) {
-        if (status == TextToSpeech.SUCCESS) {
-            int result = tts.setLanguage(new Locale("sr", "RS"));
-            if (result == TextToSpeech.LANG_MISSING_DATA
-                    || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                tts.setLanguage(new Locale("hr", "HR"));
+    public void playVoice(int resourceId) {
+        if (learningView == null || !learningView.isSoundEnabled()) return;
+        stopVoice();
+        player = MediaPlayer.create(this, resourceId);
+        if (player == null) return;
+        player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override public void onCompletion(MediaPlayer mediaPlayer) {
+                mediaPlayer.release();
+                if (player == mediaPlayer) player = null;
             }
-            tts.setSpeechRate(0.86f);
-            tts.setPitch(1.06f);
-            ttsReady = true;
-            if (learningView != null) learningView.onVoiceReady();
+        });
+        player.start();
+    }
+
+    public void stopVoice() {
+        if (player != null) {
+            try { if (player.isPlaying()) player.stop(); } catch (IllegalStateException ignored) { }
+            player.release();
+            player = null;
         }
     }
 
-    public void speak(String text) {
-        if (!ttsReady || !learningView.isSoundEnabled()) return;
-        tts.stop();
-        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null, "kamioni-glas");
-    }
-
     public void successSound() {
-        if (learningView.isSoundEnabled()) {
-            tones.startTone(ToneGenerator.TONE_PROP_ACK, 180);
+        if (learningView != null && learningView.isSoundEnabled()) {
+            tones.startTone(ToneGenerator.TONE_PROP_ACK, 190);
         }
     }
 
     public void wrongSound() {
-        if (learningView.isSoundEnabled()) {
+        if (learningView != null && learningView.isSoundEnabled()) {
             tones.startTone(ToneGenerator.TONE_PROP_NACK, 170);
         }
     }
 
     @Override
     public void onBackPressed() {
-        if (learningView.goHome()) return;
+        if (learningView != null && learningView.goHome()) return;
         super.onBackPressed();
     }
 
     @Override
     protected void onDestroy() {
-        if (tts != null) {
-            tts.stop();
-            tts.shutdown();
-        }
+        stopVoice();
         if (tones != null) tones.release();
         super.onDestroy();
     }

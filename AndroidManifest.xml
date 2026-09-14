@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="rs.ucimokrozigru.kamioni">
+    package="rs.ucimokrozigru.kamioni"
+    android:versionCode="2"
+    android:versionName="2.0">
 
     <uses-sdk android:minSdkVersion="23" android:targetSdkVersion="28" />
 
     <application
         android:allowBackup="false"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/app_icon"
         android:label="Učimo kroz igru – Kamioni"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">

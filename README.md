@@ -1,31 +1,31 @@
 # Učimo kroz igru – Kamioni
 
-Interaktivna Android knjiga za decu uzrasta približno 2–5 godina.
+Kompletna Android edukativna igra za malu decu. Aplikacija radi bez interneta i sadrži deset ilustrovanih zadataka o kamionima.
 
-## Šta aplikacija sadrži
+## Verzija 2.0
 
-- 10 interaktivnih zadataka o kamionima
-- glasovna pitanja na srpskom jeziku
-- zvučnu i vizuelnu povratnu informaciju
-- zvezdice i završnu nagradu
-- rad bez interneta, reklama i prijavljivanja
+- 10 novih ilustrovanih scena
+- ugrađen prirodan srpski glas za pitanja, odgovore i pomoć
+- klikabilni delovi slike i veliki tasteri prilagođeni maloj deci
+- animacije, konfete, zvuk tačnog i pogrešnog odgovora
+- ponavljanje pitanja pritiskom na zvučnik
+- glas objašnjava gde treba pritisnuti za sledeći zadatak
+- automatski glasovni podsetnik ako dete zastane
+- brojanje svakog pokušaja i završna ocena
+- posebna pohvala kada je svih 10 zadataka rešeno iz prve
+- radi potpuno bez interneta
 
-## Instalacija gotovog APK-a
+## APK preko GitHub Actions
 
-Preuzmite `UcimoKrozIgru-Kamioni.apk`, otvorite ga na Android telefonu i dozvolite
-instalaciju iz tog izvora kada telefon to zatraži.
+Svaka promena na grani `main` automatski pokreće pravljenje APK fajla. Otvori karticu **Actions**, izaberi poslednji uspešan proces i preuzmi artefakt **UcimoKrozIgru-Kamioni-APK**.
 
-## Izrada iz izvornog koda
+## Lokalna izrada
 
-Projekat je namerno napravljen bez spoljnih biblioteka. Potrebni su Java 8 ili
-novija i Android SDK sa platformom i build-tools paketom. Pokrenite:
+Potreban je Android SDK sa platformom i build-tools paketom, zatim:
 
 ```bash
 chmod +x build.sh
 ./build.sh
 ```
 
-Gotov paket biće u `build/UcimoKrozIgru-Kamioni.apk`.
-
-Napomena: APK se trenutno potpisuje razvojnim ključem za direktnu instalaciju.
-Za objavljivanje u Google Play prodavnici treba napraviti trajni produkcioni ključ.
+APK će biti napravljen kao `build/UcimoKrozIgru-Kamioni.apk`.
