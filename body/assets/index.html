@@ -1,0 +1,143 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>My Body — English</title><style>
+*{box-sizing:border-box}body{margin:0;background:#f6f4ec;color:#223d49;font-family:system-ui,sans-serif}main{max-width:700px;margin:auto;padding:20px;text-align:center}header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.brand{text-align:left;font-size:22px;font-weight:900}.brand small{display:block;font-size:12px;letter-spacing:2px;color:#547582;margin-top:4px}button{font:inherit;cursor:pointer;touch-action:manipulation}button:focus-visible{outline:4px solid #184c69;outline-offset:3px}.sound{border:2px solid #d7dfd9;background:white;border-radius:18px;padding:12px;font-size:25px;min-width:58px}h1{font-size:clamp(30px,7vw,44px);margin:10px 0;line-height:1.15}p{font-size:18px;line-height:1.4}.kicker{font-size:14px;font-weight:800;letter-spacing:1.5px;color:#497b7c}.primary{display:block;margin:22px auto 12px;background:#217d7e;color:#fff;font-size:25px;font-weight:850;border:0;border-radius:23px;padding:18px 30px;box-shadow:0 6px 0 #145a60;min-height:65px}.primary:active{transform:translateY(3px);box-shadow:0 3px 0 #145a60}.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px auto;max-width:510px}.tile{border:2px solid #dbe2dc;border-radius:27px;background:white;box-shadow:0 5px 0 #dce2d9;min-height:155px;padding:12px;display:grid;place-items:center}.tile svg{width:100%;height:145px}.tile:active{transform:scale(.96)}.hero{height:210px;margin:18px 0}.hero svg{height:100%;max-width:100%}.big-icon{background:#fff;border-radius:36px;max-width:350px;margin:24px auto 16px;padding:22px;border:2px solid #dbe2dc}.big-icon svg{height:235px;width:100%}.progress{display:flex;justify-content:center;gap:4px;margin:18px 0}.dot{width:11px;height:11px;background:#dbe0d6;border-radius:50%}.dot.done{background:#efb344}.dot.now{background:#217d7e}.feedback{font-weight:750;font-size:18px;min-height:28px}.hint{color:#5b7177;font-size:15px}.star-grid{font-size:37px;color:#f2b62c;line-height:1.4;margin:24px auto}.confetti{position:fixed;top:-35px;pointer-events:none;animation:fall 3s forwards;font-size:24px;z-index:5}.wiggle{animation:wiggle .35s}.fact{max-width:410px;margin:18px auto}.word{background:none;border:0;font-weight:900;font-size:37px;color:#223d49}.pill{display:inline-block;background:#e1efeb;padding:7px 13px;border-radius:14px;font-size:14px}.home-icons{display:flex;justify-content:center;gap:16px;margin:24px 0}.home-icons svg{height:74px;width:74px}@keyframes fall{to{transform:translateY(110vh) rotate(360deg)}}@keyframes wiggle{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}@media(max-height:710px){main{padding:12px 16px}header{margin-bottom:12px}.grid{gap:12px;margin:14px auto}.tile{min-height:115px;padding:6px}.tile svg{height:110px}.big-icon{margin:12px auto;padding:12px}.big-icon svg{height:180px}.primary{margin:15px auto 10px}h1{font-size:30px}}@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style><main><header><div class="brand">My Body <small>LET’S LEARN ENGLISH</small></div><button id="sound" class="sound" aria-label="Repeat the instruction">🔊</button></header><div id="app"></div><p class="hint" id="notice"></p></main><script>
+const parts=[
+  [
+    "head",
+    "head",
+    "My head is at the top of my body."
+  ],
+  [
+    "hair",
+    "hair",
+    "Hair grows on my head."
+  ],
+  [
+    "eyes",
+    "eyes",
+    "I see with my eyes."
+  ],
+  [
+    "ears",
+    "ears",
+    "I hear with my ears."
+  ],
+  [
+    "nose",
+    "nose",
+    "I smell with my nose."
+  ],
+  [
+    "mouth",
+    "mouth",
+    "I speak with my mouth."
+  ],
+  [
+    "teeth",
+    "teeth",
+    "I chew with my teeth."
+  ],
+  [
+    "tongue",
+    "tongue",
+    "I taste with my tongue."
+  ],
+  [
+    "neck",
+    "neck",
+    "My neck connects my head to my body."
+  ],
+  [
+    "shoulders",
+    "shoulders",
+    "My shoulders are above my arms."
+  ],
+  [
+    "arms",
+    "arms",
+    "I stretch my arms."
+  ],
+  [
+    "elbows",
+    "elbows",
+    "I bend my arms at my elbows."
+  ],
+  [
+    "hands",
+    "hands",
+    "I clap my hands."
+  ],
+  [
+    "fingers",
+    "fingers",
+    "I wiggle my fingers."
+  ],
+  [
+    "tummy",
+    "tummy",
+    "My tummy is below my chest."
+  ],
+  [
+    "back",
+    "back",
+    "My back is behind me."
+  ],
+  [
+    "legs",
+    "legs",
+    "I walk with my legs."
+  ],
+  [
+    "knees",
+    "knees",
+    "I bend my legs at my knees."
+  ],
+  [
+    "feet",
+    "feet",
+    "I stand on my feet."
+  ],
+  [
+    "toes",
+    "toes",
+    "I wiggle my toes."
+  ]
+];
+const accent='#ef6680',pale='#e5e8e3',line='#66808a';
+function svg(content,view='0 0 200 220'){return '<svg viewBox="'+view+'" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="none" stroke-linecap="round" stroke-linejoin="round">'+content+'</svg>'}
+function icon(id){
+const eye=(x,y)=>'<path d="M'+(x-31)+' '+y+'q31 -34 62 0q-31 34 -62 0Z" fill="white" stroke="'+line+'" stroke-width="4"/><circle cx="'+x+'" cy="'+y+'" r="14" fill="'+accent+'"/><circle cx="'+x+'" cy="'+y+'" r="6" fill="#263e4b"/><circle cx="'+(x+4)+'" cy="'+(y-5)+'" r="3" fill="white"/>';
+if(id==='eyes')return svg(eye(52,105)+eye(148,105));
+if(id==='nose')return svg('<path d="M93 47c-5 28 -8 51 -28 76 -15 25 1 43 24 28q11 12 23 0c24 15 37 -6 22 -28 -15 -24 -23 -47 -25 -76" fill="'+accent+'" stroke="#b54662" stroke-width="5"/><path d="M73 143q9 -11 17 0m21 0q9 -11 17 0" stroke="#b54662" stroke-width="5"/>');
+if(id==='ears')return svg('<path d="M67 173c-15 0 -13 -22 -26 -34C3 101 22 48 60 50c41 3 39 59 17 77 -11 10 6 44 -10 46Z" fill="'+accent+'" stroke="#b54662" stroke-width="5"/><path d="M51 123c-29 -31 -3 -57 13 -45 15 12 -2 26 -10 21" stroke="#b54662" stroke-width="5"/><path d="M133 173c15 0 13 -22 26 -34 38 -38 19 -91 -19 -89 -41 3 -39 59 -17 77 11 10 -6 44 10 46Z" fill="'+accent+'" stroke="#b54662" stroke-width="5"/><path d="M149 123c29 -31 3 -57 -13 -45 -15 12 2 26 10 21" stroke="#b54662" stroke-width="5"/>');
+if(['mouth','teeth','tongue'].includes(id))return svg('<path d="M29 105Q58 77 84 82Q100 93 116 82Q145 77 171 105Q150 162 100 160Q50 162 29 105Z" fill="'+(id==='mouth'?accent:'#e5b5bb')+'"/><path d="M42 109Q100 132 158 109Q145 152 100 152Q55 152 42 109Z" fill="#563849"/>'+(id==='tongue'?'<path d="M76 132Q100 119 124 132v24q-24 25 -48 0Z" fill="'+accent+'" stroke="#b54662" stroke-width="3"/><path d="M100 136v20" stroke="#b54662" stroke-width="3"/>':'<path d="M47 109Q100 126 153 109L145 128Q100 141 55 128Z" fill="'+(id==='teeth'?accent:'white')+'"/><path d="M78 118v15m22 -11v13m22 -17v15" stroke="'+(id==='teeth'?'#b54662':'#bbc5c8')+'" stroke-width="2"/>'));
+if(['hands','fingers'].includes(id))return svg('<path d="M66 182c-19 -19 -26 -42 -34 -60 -7 -18 8 -25 17 -10l12 17 -8 -70c-2 -17 16 -17 18 -2l7 46 -2 -65c0 -16 18 -16 18 0l3 63 4 -71c1 -15 18 -13 18 1l-2 71 11 -57c4 -15 20 -11 17 4l-10 71 11 -31c6 -15 22 -7 16 8l-18 57c-4 14 -12 23 -19 28Z" fill="'+(id==='hands'?accent:pale)+'" stroke="'+line+'" stroke-width="4"/>'+(id==='fingers'?'<path d="M65 101L61 59m26 38 -2 -58m22 60 3 -67m14 73 13 -56" stroke="'+accent+'" stroke-width="13"/>':''));
+if(['feet','toes'].includes(id))return svg('<path d="M62 182C25 151 46 132 48 105L51 65Q55 32 74 51Q87 29 98 49Q112 31 121 55Q137 42 143 65Q161 62 158 84L147 131Q133 166 135 183Q98 203 62 182Z" fill="'+(id==='feet'?accent:pale)+'" stroke="'+line+'" stroke-width="4"/>'+(id==='toes'?'<g fill="'+accent+'"><ellipse cx="62" cy="66" rx="11" ry="17"/><ellipse cx="86" cy="59" rx="10" ry="16"/><ellipse cx="109" cy="60" rx="9" ry="14"/><ellipse cx="131" cy="72" rx="9" ry="13"/><ellipse cx="149" cy="86" rx="8" ry="11"/></g>':'<path d="M73 53l-1 23m24 -25 -1 23m24 -14 -2 20m21 -10 -2 19" stroke="#b54662" stroke-width="3"/>'));
+const face=['head','hair'].includes(id);let out='';
+if(face){out='<ellipse cx="100" cy="112" rx="63" ry="75" fill="'+(id==='head'?accent:'#f5cfb5')+'"/><ellipse cx="35" cy="116" rx="10" ry="18" fill="#f5cfb5"/><ellipse cx="165" cy="116" rx="10" ry="18" fill="#f5cfb5"/><path d="M36 96Q25 32 90 29Q164 17 167 95L147 70 127 79 107 61Q79 89 52 74Z" fill="'+(id==='hair'?accent:'#694d43')+'"/><circle cx="75" cy="111" r="5" fill="#334a55"/><circle cx="125" cy="111" r="5" fill="#334a55"/><path d="M97 119l-4 13 10 0m-22 15q20 20 39 0" stroke="#956b61" stroke-width="4"/>';return svg(out)}
+let hit=n=>id===n?accent:pale;
+out='<path d="M76 142L73 195M124 142L127 195" stroke="'+hit('legs')+'" stroke-width="22"/><path d="M71 91L48 117 39 143M129 91L152 117 161 143" stroke="'+hit('arms')+'" stroke-width="18"/><path d="M75 79Q100 73 125 79L137 142Q100 157 63 142Z" fill="'+(id==='back'?accent:pale)+'" stroke="'+line+'" stroke-width="2"/><path d="M92 59v20h16V59" fill="'+hit('neck')+'"/><ellipse cx="100" cy="40" rx="25" ry="29" fill="'+pale+'" stroke="'+line+'" stroke-width="2"/><path d="M65 200h16m38 0h17" stroke="'+pale+'" stroke-width="15"/><circle cx="36" cy="148" r="11" fill="'+pale+'"/><circle cx="164" cy="148" r="11" fill="'+pale+'"/>';
+if(id!=='back')out+='<circle cx="91" cy="38" r="2" fill="'+line+'"/><circle cx="109" cy="38" r="2" fill="'+line+'"/><path d="M93 51q7 7 14 0" stroke="'+line+'" stroke-width="2"/>';
+if(id==='shoulders')out+='<path d="M73 87q10 -9 18 -8m18 0q11 0 18 8" stroke="'+accent+'" stroke-width="17"/>';
+if(id==='elbows')out+='<circle cx="49" cy="117" r="12" fill="'+accent+'"/><circle cx="151" cy="117" r="12" fill="'+accent+'"/>';
+if(id==='knees')out+='<circle cx="74" cy="170" r="12" fill="'+accent+'"/><circle cx="126" cy="170" r="12" fill="'+accent+'"/>';
+if(id==='tummy')out+='<ellipse cx="100" cy="126" rx="25" ry="20" fill="'+accent+'"/><circle cx="100" cy="128" r="3" fill="#b54662"/>';
+if(id==='back')out+='<path d="M100 88v44m-18 -35 12 9m24 -9 -12 9" stroke="#b54662" stroke-width="3"/>';
+return svg(out);
+}
+let order=[],step=0,attempts=0,firsts=0,tries=0,phase='home',last='',audioPlayer=null,locked=false;
+const app=document.querySelector('#app');
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function speechKey(t){let h=5381;for(let i=0;i<t.length;i++)h=(Math.imul(h,33)^t.charCodeAt(i))>>>0;return 'v'+h}
+function stop(){if(audioPlayer){audioPlayer.pause();audioPlayer=null}}
+function speak(t){last=t;stop();document.querySelector('#notice').textContent='';audioPlayer=new Audio('audio/'+speechKey(t)+'.mp3');audioPlayer.play().catch(()=>{document.querySelector('#notice').textContent='Tap the speaker to play the sound.'})}
+function progress(){return '<div class="progress" aria-label="'+step+' of 20 complete">'+order.map((_,i)=>'<span class="dot '+(i<step?'done':i===step?'now':'')+'"></span>').join('')+'</div>'}
+function party(){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;for(let i=0;i<24;i++){let e=document.createElement('span');e.className='confetti';e.textContent=['⭐','✨','💛'][i%3];e.style.left=Math.random()*95+'%';e.style.animationDelay=Math.random()*.6+'s';document.body.append(e);setTimeout(()=>e.remove(),3800)}}
+function home(){phase='home';app.innerHTML='<div class="hero">'+icon('head')+'</div><div class="kicker">FROM HEAD TO TOE</div><h1>Meet your body!</h1><p>Listen, look and tap.</p><div class="home-icons">'+icon('eyes')+icon('hands')+icon('feet')+'</div><button class="primary" id="start">▶ Play</button><p class="hint">20 body parts · English voice · No rush</p>';document.querySelector('#start').onclick=start;last='Let us learn the parts of the body! Press Play.'}
+function start(){stop();order=shuffle(parts.map((_,i)=>i));step=attempts=firsts=0;question()}
+function question(){phase='question';locked=false;tries=0;let idx=order[step],p=parts[idx];let opts=shuffle([idx,...shuffle(parts.map((_,i)=>i).filter(i=>i!==idx)).slice(0,3)]);app.innerHTML=progress()+'<div class="kicker">'+(step+1)+' / 20</div><h1>Find the '+p[1]+'</h1><p class="hint">Look at the pink part of each picture.</p><div class="grid">'+opts.map(i=>'<button class="tile" data-part="'+i+'" aria-label="'+parts[i][1]+'">'+icon(parts[i][0])+'</button>').join('')+'</div><div class="feedback" aria-live="polite">Which picture is it? 👆</div>';document.querySelectorAll('.tile').forEach(b=>b.onclick=()=>answer(Number(b.dataset.part),b));speak('Find the '+p[1]+'. Tap the picture.')}
+function answer(i,b){if(phase!=='question'||locked)return;attempts++;tries++;if(i!==order[step]){b.classList.remove('wiggle');void b.offsetWidth;b.classList.add('wiggle');document.querySelector('.feedback').textContent='Try again. You can do it!';speak('Try again. You can do it!');return}locked=true;if(tries===1)firsts++;success();party()}
+function success(){phase='success';let p=parts[order[step]],name=p[1][0].toUpperCase()+p[1].slice(1);app.innerHTML=progress()+'<span class="pill">⭐ Well done!</span><div class="big-icon">'+icon(p[0])+'</div><button id="word" class="word" aria-label="Hear '+name+'">'+name+' 🔊</button><p class="fact">'+p[2]+'</p><button class="primary" id="next">'+(step===19?'My stars ⭐':'Next ➜')+'</button>';document.querySelector('#word').onclick=()=>speak(name+'.');document.querySelector('#next').onclick=()=>{stop();step++;step===20?finish():question()};speak('Well done! '+name+'. '+p[2]+' Press the big button to keep going.')}
+function finish(){phase='finish';app.innerHTML='<div class="hero" style="height:auto;font-size:90px">🏆</div><div class="kicker">YOU DID IT!</div><h1>'+(firsts===20?'Perfect!':'Wonderful!')+'</h1><p>You found all 20 body parts!</p><div class="star-grid" aria-label="20 stars">'+('★★★★★<br>'.repeat(4))+'</div><p>'+attempts+' tries · '+firsts+' right the first time</p><button id="again" class="primary">Play again ↻</button>';document.querySelector('#again').onclick=start;speak(firsts===20?'Wonderful! You found every body part on the first try! You earned twenty stars! Press Play again for a new game.':'Well done! You found all twenty body parts! You earned twenty stars! Press Play again for a new game.');party()}
+document.querySelector('#sound').onclick=()=>speak(last);document.addEventListener('visibilitychange',()=>{if(document.hidden)stop()});home();
+</script></html>
