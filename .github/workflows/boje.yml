@@ -1,0 +1,37 @@
+name: Ucimo boje APK
+on:
+  pull_request:
+    paths: ['boje/**', '.github/workflows/boje.yml']
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Srpski glas normalnom brzinom
+        run: |
+          pip install edge-tts
+          python boje/generate_audio.py
+      - name: Android SDK
+        run: |
+          sdkmanager_bin="$(find /usr/local/lib/android/sdk/cmdline-tools -path '*/bin/sdkmanager' -type f | sort -V | tail -1)"
+          yes | "$sdkmanager_bin" --licenses >/dev/null || true
+          "$sdkmanager_bin" "platforms;android-35" "build-tools;35.0.0"
+      - name: Build and verify APK
+        run: bash boje/build.sh
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Ucimo-Boje-APK
+          path: |
+            boje/build/Ucimo-Boje.apk
+            boje/assets/audio/
+          if-no-files-found: error
+          retention-days: 30
