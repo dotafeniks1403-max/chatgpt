@@ -1,0 +1,22 @@
+name: Serbian voice sample
+on:
+  pull_request:
+    paths: ['.github/workflows/serbian-voice-sample.yml']
+permissions:
+  contents: read
+jobs:
+  sample:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Generate Serbian male voice at normal speed
+        run: |
+          pip install edge-tts
+          edge-tts --voice sr-RS-NicholasNeural --rate='+0%' --pitch='+0Hz' --text 'Пронађи црвену боју. Браво! То је црвена боја. Јагода, трешња и парадајз су црвени. Притисни дугме за следећу боју. Свака част, мајсторе!' --write-media Srpski-glas-uzorak.mp3
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Srpski-glas-uzorak
+          path: Srpski-glas-uzorak.mp3
+          if-no-files-found: error
